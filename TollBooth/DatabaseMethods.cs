@@ -42,14 +42,14 @@ namespace TollBooth
                 // MaxItemCount value tells the document query to retrieve 100 documents at a time until all are returned.
                 // TODO 5: Retrieve a List of LicensePlateDataDocument objects from the collectionLink where the exported value is false.
 
-                //licensePlates = _client.CreateDocumentQuery<LicensePlateDataDocument>(collectionLink,
-                //        new FeedOptions() { EnableCrossPartitionQuery = true, MaxItemCount = 100 })
-                //    .Where(l => l.exported == false)
-                //    .ToList();
                 licensePlates = _client.CreateDocumentQuery<LicensePlateDataDocument>(collectionLink,
-                "SELECT * FROM Processed c WHERE c.exported = false",
-                new FeedOptions() { EnableCrossPartitionQuery = true, MaxItemCount = 100 })
-                .ToList();
+                        new FeedOptions() { EnableCrossPartitionQuery = true, MaxItemCount = 100 })
+                //    .Where(l => l.exported == false)
+                    .ToList();
+                //licensePlates = _client.CreateDocumentQuery<LicensePlateDataDocument>(collectionLink,
+                //"SELECT * FROM Processed c WHERE c.exported = false",
+                //new FeedOptions() { EnableCrossPartitionQuery = true, MaxItemCount = 100 })
+                //.ToList();
             }
 
             exportedCount = licensePlates.Count();
