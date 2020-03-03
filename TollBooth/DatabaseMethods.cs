@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Azure.Documents.Client;
 using Microsoft.Azure.WebJobs.Host;
+
 using Microsoft.Extensions.Logging;
 using TollBooth.Models;
 
@@ -40,10 +41,15 @@ namespace TollBooth
             {
                 // MaxItemCount value tells the document query to retrieve 100 documents at a time until all are returned.
                 // TODO 5: Retrieve a List of LicensePlateDataDocument objects from the collectionLink where the exported value is false.
+
+                //licensePlates = _client.CreateDocumentQuery<LicensePlateDataDocument>(collectionLink,
+                //        new FeedOptions() { EnableCrossPartitionQuery = true, MaxItemCount = 100 })
+                //    .Where(l => l.exported == false)
+                //    .ToList();
                 licensePlates = _client.CreateDocumentQuery<LicensePlateDataDocument>(collectionLink,
-                        new FeedOptions() { EnableCrossPartitionQuery = true, MaxItemCount = 100 })
-                    .Where(l => l.exported == false)
-                    .ToList();
+                "SELECT * FROM Processed c WHERE c.exported = false",
+                new FeedOptions() { EnableCrossPartitionQuery = true, MaxItemCount = 100 })
+                .ToList();
             }
 
             exportedCount = licensePlates.Count();
